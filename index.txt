@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="radios.MainPage">
+    <HorizontalStackLayout>
+        <VerticalStackLayout Padding="10">
+            <HorizontalStackLayout>
+                <Label Text="Imie " Margin="0, 0, 10, 0" VerticalOptions="Center" />
+                <Entry x:Name="imieEntr" />
+            </HorizontalStackLayout>
+            <Label Text="Płeć" />
+            <RadioButton x:Name="k" IsChecked="True" GroupName="plec" Content="Kobieta" />
+            <RadioButton x:Name="m" GroupName="plec" Content="Mężczyzna" />
+            <Label Text="Wybór diety" />
+            <RadioButton x:Name="wege" GroupName="diet" Content="Wegetariańska" />
+            <RadioButton x:Name="wega" GroupName="diet" Content="Wegańska" />
+            <RadioButton x:Name="nie" IsChecked="True" GroupName="diet" Content="Dowolna" />
+
+            <Button Text="Podsumowanie" Clicked="sumuj" Margin="0, 20, 0, 5" />
+            <Label x:Name="wyniki" />
+        </VerticalStackLayout>
+        <VerticalStackLayout Padding="10">
+            <HorizontalStackLayout>
+                <Label Text="Promień" VerticalOptions="Center" />
+                <Entry x:Name="rad" />
+            </HorizontalStackLayout>
+            <RadioButton IsChecked="True" x:Name="p" GroupName="obliczenia" Content="Pole" />
+            <RadioButton x:Name="o" GroupName="obliczenia" Content="Obwód" />
+            <Button Text="Oblicz" Clicked="liczenie" Margin="0, 20, 0, 5" />
+            <Label x:Name="wynik" />
+        </VerticalStackLayout>
+    </HorizontalStackLayout>
+</ContentPage>
+
+
+
+
+namespace radios
+{
+    public partial class MainPage : ContentPage
+    {
+        public MainPage()
+        {
+            InitializeComponent();
+        }
+
+        private void sumuj(object sender, EventArgs e)
+        {
+            string imie = imieEntr.Text;
+            string plec;
+            string diet;
+            int cena;
+            if(m.IsChecked == true)
+            {
+                plec = "Mężczyzna";
+            }
+            else
+            {
+                plec = "Kobieta";
+            }
+
+            if(wege.IsChecked == true)
+            {
+                diet = "Wegetariańska";
+                cena = 35;
+            }
+            else if(wega.IsChecked == true)
+            {
+                diet = "Wegańska";
+                cena = 40;
+            }
+            else
+            {
+                diet = "Brak";
+                cena = 37;
+            }
+
+            wyniki.Text = "Imię: "+imie+" \nPłeć: "+plec+" \nDieta: "+diet+" \nCena: "+cena+"zł";
+        }
+
+        private void liczenie(object sender, EventArgs e)
+        {
+            string radS = rad.Text;
+            if(double.TryParse(radS, out double r))
+            {
+                double wyn;
+                if(p.IsChecked == true)
+                {
+                    wyn = Math.PI * r * r;
+                    wynik.Text = "Pole = " + wyn;
+                }
+                else
+                {
+                    wyn = Math.PI * r * 2;
+                    wynik.Text = "Obwód = " + wyn;
+                }
+            }
+            else
+            {
+                wynik.Text = "Niepoprawne dane";
+            }
+        }
+    }
+}
